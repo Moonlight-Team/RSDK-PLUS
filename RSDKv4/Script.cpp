@@ -430,11 +430,8 @@ const FunctionInfo functions[] = {
     FunctionInfo("RotatePalette", 4),
     FunctionInfo("SetScreenFade", 4),
     FunctionInfo("SetActivePalette", 3),
-#if RETRO_REV00
-    FunctionInfo("SetPaletteFade", 7),
-#else
+    FunctionInfo("SetLimitedFade", 7),
     FunctionInfo("SetPaletteFade", 6),
-#endif
     FunctionInfo("SetPaletteEntry", 3),
     FunctionInfo("GetPaletteEntry", 3),
     FunctionInfo("CopyPalette", 5),
@@ -961,6 +958,7 @@ enum ScrFunc {
     FUNC_ROTATEPALETTE,
     FUNC_SETSCREENFADE,
     FUNC_SETACTIVEPALETTE,
+    FUNC_SETLIMITEDFADE,
     FUNC_SETPALETTEFADE,
     FUNC_SETPALETTEENTRY,
     FUNC_GETPALETTEENTRY,
@@ -4700,14 +4698,13 @@ void ProcessScript(int scriptCodeStart, int jumpTableStart, byte scriptEvent)
                 opcodeSize = 0;
                 SetActivePalette(scriptEng.operands[0], scriptEng.operands[1], scriptEng.operands[2]);
                 break;
-            case FUNC_SETPALETTEFADE:
-#if RETRO_REV00
+            case FUNC_SETLIMITEDFADE:
                 SetLimitedFade(scriptEng.operands[0], scriptEng.operands[1], scriptEng.operands[2], scriptEng.operands[3], scriptEng.operands[4],
                                scriptEng.operands[5], scriptEng.operands[6]);
-#else
+                break;
+            case FUNC_SETPALETTEFADE:
                 SetPaletteFade(scriptEng.operands[0], scriptEng.operands[1], scriptEng.operands[2], scriptEng.operands[3], scriptEng.operands[4],
                                scriptEng.operands[5]);
-#endif
                 break;
             case FUNC_SETPALETTEENTRY: SetPaletteEntryPacked(scriptEng.operands[0], scriptEng.operands[1], scriptEng.operands[2]); break;
             case FUNC_GETPALETTEENTRY: scriptEng.operands[2] = GetPaletteEntryPacked(scriptEng.operands[0], scriptEng.operands[1]); break;
